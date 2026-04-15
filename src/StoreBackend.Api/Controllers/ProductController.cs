@@ -11,10 +11,16 @@ namespace StoreBackend.Api.Controllers
     [Route("api/products")]
     [ApiController]
 
-    public class ProductController_API_Controller : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IProductFacade productFacade;
 
+        public ProductController(IProductFacade productFacade)
+        {
+            this.productFacade = productFacade;
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
             var products = await productFacade.GetAllAsync();
@@ -22,7 +28,7 @@ namespace StoreBackend.Api.Controllers
             return Ok(models);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(Guid id)
         {
             try
@@ -47,7 +53,7 @@ namespace StoreBackend.Api.Controllers
             return CreatedAtAction(nameof(GetProduct), new {id = model.ProductResourceId}, model);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             try
