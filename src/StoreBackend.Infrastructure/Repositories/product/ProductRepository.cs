@@ -2,9 +2,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using StoreBackend.Domain.Entities;
 
-namespace StoreBackend.Infrastructure.Repositories;
+namespace StoreBackend.Infrastructure.Repositories.product;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository:IProductRepository
 {
     private readonly AppDbContext _context;
 
@@ -20,8 +20,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product?> GetByIdAsync(Guid productId)
     {
-        return await _context.Products
-            .FirstOrDefaultAsync(p => p.ProductResourceId == productId);
+        return await _context.Products.FirstOrDefaultAsync(p => p.ProductResourceID == productId);
     }
 
     public async Task<Product> AddAsync(Product product)

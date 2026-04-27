@@ -1,16 +1,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoreBackend.Api.Mappers;
-using StoreBackend.Api.Models.Requests;
-using StoreBackend.Domain.Entities;
+using StoreBackend.Api.Models.Requests.product;
 using StoreBackend.Exceptions;
-using StoreBackend.Facade;
+using StoreBackend.Facade.product;
 
-namespace StoreBackend.Api.Controllers
+namespace StoreBackend.Api
 {
     [Route("api/products")]
     [ApiController]
-
     public class ProductController : ControllerBase
     {
         private readonly IProductFacade productFacade;
@@ -19,7 +17,6 @@ namespace StoreBackend.Api.Controllers
         {
             this.productFacade = productFacade;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
@@ -34,11 +31,10 @@ namespace StoreBackend.Api.Controllers
             try
             {
                 var product = await productFacade.GetByIdAsync(id);
-
                 var model = ProductMapper.ToModel(product);
                 return Ok(model);
             }
-            catch(ResourceNotFoundException)
+            catch (ResourceNotFoundException)
             {
                 return NotFound();
             }
@@ -50,7 +46,7 @@ namespace StoreBackend.Api.Controllers
             var dto = ProductMapper.ToDto(product);
             var addedProduct = await productFacade.AddAsync(dto);
             var model = ProductMapper.ToModel(addedProduct);
-            return CreatedAtAction(nameof(GetProduct), new {id = model.ProductResourceId}, model);
+            return CreatedAtAction(nameof(GetProduct), new { id = model.ProductResourceId }, model);
         }
 
         [HttpDelete("{id}")]
@@ -66,8 +62,5 @@ namespace StoreBackend.Api.Controllers
                 return NotFound();
             }
         }
-
     }
-
-    
 }

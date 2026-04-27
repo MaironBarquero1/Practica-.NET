@@ -1,7 +1,8 @@
 using System;
-using StoreBackend.Dto;
+using StoreBackend.Domain.Entities;
+using StoreBackend.Dto.product;
 
-namespace StoreBackend.Facade;
+namespace StoreBackend.Facade.product;
 
 public interface IProductFacade
 {

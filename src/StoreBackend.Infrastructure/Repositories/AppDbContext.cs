@@ -1,9 +1,8 @@
-using System;
-using System.Net.Http.Headers;
+using System.Numerics;
 using Microsoft.EntityFrameworkCore;
 using StoreBackend.Domain.Entities;
 
-namespace StoreBackend.Infrastructure;
+namespace StoreBackend.Infrastructure.Repositories;
 
 public class AppDbContext : DbContext
 {
@@ -12,4 +11,6 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Product> Products { get; set; }
+
+    public DbSet<User> Users { get; set; }
 }

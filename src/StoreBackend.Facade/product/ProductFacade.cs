@@ -1,19 +1,19 @@
 using System;
 using StoreBackend.Domain.Entities;
-using StoreBackend.DomainService;
-using StoreBackend.Dto;
-using StoreBackend.Infrastructure;
+using StoreBackend.DomainService.product;
+using StoreBackend.Dto.product;
 using StoreBackend.Exceptions;
 using StoreBackend.Facade.Mappers;
+using StoreBackend.Infrastructure.Repositories;
 
-namespace StoreBackend.Facade;
+namespace StoreBackend.Facade.product;
 
-public class ProductFacade : IProductFacade
+public class ProductFacade:IProductFacade
 {
     private readonly IProductService productService;
     private readonly AppDbContext context;
 
-    public ProductFacade(IProductService productService, AppDbContext context)
+    public ProductFacade(IProductService productService,AppDbContext context)
     {
         this.productService = productService;
         this.context = context;
@@ -26,7 +26,7 @@ public class ProductFacade : IProductFacade
         return ProductMapper.ToDto(entity);
     }
 
-    public  async Task DeleteAsync(Guid productId)
+    public async Task DeleteAsync(Guid productId)
     {
         await productService.DeleteAsync(productId);
         await context.SaveChangesAsync();

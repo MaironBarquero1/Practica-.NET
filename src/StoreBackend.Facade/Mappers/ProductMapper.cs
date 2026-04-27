@@ -1,6 +1,6 @@
 using System;
 using StoreBackend.Domain.Entities;
-using StoreBackend.Dto;
+using StoreBackend.Dto.product;
 
 namespace StoreBackend.Facade.Mappers;
 
@@ -15,7 +15,7 @@ public class ProductMapper
     {
         return new ProductDto
         {
-            ProductResourceId = product.ProductResourceId,
+            ProductResourceId = product.ProductResourceID,
             Name = product.Name
         };
     }

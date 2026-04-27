@@ -1,28 +1,29 @@
 using Microsoft.EntityFrameworkCore;
-using StoreBackend.DomainService;
-using StoreBackend.Facade;
-using StoreBackend.Infrastructure;
+using StoreBackend.DomainService.product;
+using StoreBackend.DomainService.user;
+using StoreBackend.Facade.product;
+using StoreBackend.Facade.user;
 using StoreBackend.Infrastructure.Repositories;
+using StoreBackend.Infrastructure.Repositories.product;
+using StoreBackend.Infrastructure.Repositories.user;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddDbContext<AppDbContext>(opt => 
+        opt.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
-);
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddScoped<IUserService,UserService>();
 
-builder.Services.AddScoped<IProductService, ProductService>();
-
-builder.Services.AddScoped<IProductFacade, ProductFacade>();
+builder.Services.AddScoped<IProductFacade,ProductFacade>();
+builder.Services.AddScoped<IUserFacade,UserFacade>();
 
 var app = builder.Build();
 
@@ -39,4 +40,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
