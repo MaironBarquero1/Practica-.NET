@@ -30,4 +30,14 @@ public class UserRepository : IUserRepository
     {
         _context.Users.Remove(user);
     }
+
+    public async Task<bool> HasUserByUsernameAsync(string username)
+    {
+        return await _context.Users.AnyAsync(u => u.Username == username);
+    }
+
+    public async Task<bool> HasUserByEmailAsync(string email)
+    {
+        return await _context.Users.AnyAsync(u => u.Email == email);
+    }
 }

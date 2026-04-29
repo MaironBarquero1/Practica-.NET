@@ -18,7 +18,12 @@ public class UserMapper
             ExternalId = user.ExternalId,
             Username = user.Username,
             Email = user.Email,
-            Passwordhash = user.Passwordhash,
+            Name = user.Name
         };
+    }
+
+    public static List<UserDto> toDto(List<User> users)
+    {
+        return users.Select(u => ToDto(u)).ToList();
     }
 }

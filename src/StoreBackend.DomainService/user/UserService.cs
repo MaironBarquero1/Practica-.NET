@@ -1,4 +1,5 @@
 using System;
+using Microsoft.VisualBasic;
 using StoreBackend.Domain.Entities;
 using StoreBackend.Dto.user;
 using StoreBackend.Exceptions;
@@ -22,16 +23,26 @@ public class UserService : IUserService
     {
         return _userRepository.GetByIdAsync(userId);
     }
-    public Task<User> AddAsync(UserDto user)
+    public async Task<User> AddAsync(CreateUserDto user)
     {
-        var userEntity = new User
+        if(await _userRepository.HasUserByUsernameAsync(user.Username))
         {
-            ExternalId = user.ExternalId,
+            throw new Exceptions.BadRequestResponseException("Username ir already taken");
+        }
+        if(await _userRepository.HasUserByEmailAsync(user.Email))
+        {
+            throw new Exceptions.BadRequestResponseException("Email is already taken");
+        }
+
+        var entity = new User
+        {
+            ExternalId = Guid.NewGuid(),
+            Name = user.Name,
             Username = user.Username,
             Email = user.Email,
-            Passwordhash = user.Passwordhash,
+            Passwordhash = BCrypt.Net.BCrypt.HashPassword(user.Password) 
         };
-        return _userRepository.AddAsync(userEntity);
+        return await _userRepository.AddAsync(entity);
     }
     public async Task DeleteAsync(Guid userId)
     {

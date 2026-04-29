@@ -30,7 +30,7 @@ public class UserFacade : IUserFacade
         if(entity == null) throw new ResourceNotFoundException();
         return UserMapper.ToDto(entity);
     }
-    public async Task<UserDto> AddAsync(UserDto user)
+    public async Task<UserDto> AddAsync(CreateUserDto user)
     {
         var entity = await userService.AddAsync(user);
         await context.SaveChangesAsync();
