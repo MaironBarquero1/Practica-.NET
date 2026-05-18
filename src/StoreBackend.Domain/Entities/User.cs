@@ -8,14 +8,21 @@ public class User
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int UserId { get; private set; }
+    [Required]
+    public Guid UserResourceId { get; set; }
 
     [Required]
     public Guid ExternalId { get; set; }
 
-    [Column("UserName")]
+    [Column("Name")]
     [StringLength(50)]
-    public string? UserName { get; set; }
+    [Required]
+    public required string Name { get; set; }
+
+    [Column("Username")]
+    [StringLength(50)]
+    [Required]
+    public required string Username { get; set; }
 
     [Column("Email")]
     [StringLength(100)]
@@ -24,4 +31,10 @@ public class User
     [Column("PasswordHash")]
     [StringLength(256)]
     public string? PasswordHash { get; set; } = string.Empty;
+
+    public List<UserRole> UserRoles { get; set; } = [];
+    public void ClearRoles()
+    {
+        UserRoles.Clear();
+    }
 }

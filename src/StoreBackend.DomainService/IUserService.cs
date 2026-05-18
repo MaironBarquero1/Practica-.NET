@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using StoreBackend.Domain.Entities;
 using StoreBackend.Dto;
 
-namespace StoreBackend.DomainService
+namespace StoreBackend.DomainService;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task<List<User>> GetAllAsync();
-        Task<User?> GetByIdAsync(Guid ExternalId);
-        Task<User> AddAsync(CreateUserDto user);
-        Task DeleteAsync(Guid ExternalId);
-    }
+    Task<List<User>> GetAllAsync();
+    Task<User?> GetByResourceIdAsync(Guid id);
+    Task<User> CreateAsync(CreateUserDto user);
+    Task<User?> GetByUserAndPassword(AuthorizationRequestDto request);
+
 }

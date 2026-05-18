@@ -1,7 +1,8 @@
 namespace StoreBackend.Dto;
 public class UserDto
 {
-    public Guid ExternalId {get; set;}
-    public string? UserName {get;set;}
-    public string? Email {get;set;}
+     public Guid UserResourceId { get; set; }
+    public required string Name { get; set; }
+    public required string Username { get; set; }
+    public required string Email { get; set; }
 }
