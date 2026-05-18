@@ -1,22 +1,24 @@
 using System;
+using System.Linq;
 using StoreBackend.Domain.Entities;
-using StoreBackend.Dto.product;
+using StoreBackend.Dto;
 
-namespace StoreBackend.Facade.Mappers;
-
-public class ProductMapper
+namespace StoreBackend.Facade.Mappers
 {
-    public static List<ProductDto> ToDto(List<Product> products)
+    public class ProductMapper
     {
-        return products.Select(p => ToDto(p)).ToList();
-    }
-
-    public static ProductDto ToDto(Product product)
-    {
-        return new ProductDto
+        public static List<ProductDto> ToDto(List<Product> products)
         {
-            ProductResourceId = product.ProductResourceID,
-            Name = product.Name
-        };
+            return products.Select(p => ToDto(p)).ToList();
+        }
+
+        public static ProductDto ToDto(Product product)
+        {
+            return new ProductDto
+            {
+                ProductResourceId = product.ProductResourceId,
+                Name = product.Name
+            };
+        }
     }
 }

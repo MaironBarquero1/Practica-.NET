@@ -1,8 +1,8 @@
 using System;
-using StoreBackend.Domain.Entities;
-using StoreBackend.Dto.product;
+using System.Collections.Generic; // Necesario para usar List<>
+using StoreBackend.Dto;
 
-namespace StoreBackend.Facade.product;
+namespace StoreBackend.Facade;
 
 public interface IProductFacade
 {

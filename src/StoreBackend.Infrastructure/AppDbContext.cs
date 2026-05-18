@@ -1,9 +1,11 @@
-using System.Numerics;
 using Microsoft.EntityFrameworkCore;
+using System;
 using StoreBackend.Domain.Entities;
+using System.Net.Http.Headers;
 
-namespace StoreBackend.Infrastructure.Repositories;
 
+
+namespace StoreBackend.Infrastructure;
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -13,4 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products { get; set; }
 
     public DbSet<User> Users { get; set; }
+
+
+
 }

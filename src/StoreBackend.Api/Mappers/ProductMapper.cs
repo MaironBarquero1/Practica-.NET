@@ -1,7 +1,9 @@
 using System;
-using StoreBackend.Api.Models.Requests.product;
-using StoreBackend.Api.Models.Responses.product;
-using StoreBackend.Dto.product;
+using System.Linq; // Necesario para .Select() y .ToList()
+using System.Collections.Generic; // Necesario para List<>
+using StoreBackend.Api.Models.Requests;
+using StoreBackend.Api.Models.Responses;
+using StoreBackend.Dto;
 
 namespace StoreBackend.Api.Mappers;
 
@@ -11,7 +13,7 @@ public class ProductMapper
     {
         return new ProductDto
         {
-            ProductResourceId = model.ProductResourceId!.Value,
+            ProductResourceId = model.ProductResourceId.Value,
             Name = model.Name
         };
     }

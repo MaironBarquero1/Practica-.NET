@@ -1,40 +1,57 @@
 using Microsoft.EntityFrameworkCore;
-using StoreBackend.DomainService.product;
-using StoreBackend.DomainService.user;
-using StoreBackend.Facade.product;
-using StoreBackend.Facade.user;
+using StoreBackend.DomainService;
+using StoreBackend.Facade;
+using StoreBackend.Infrastructure;
 using StoreBackend.Infrastructure.Repositories;
-using StoreBackend.Infrastructure.Repositories.product;
-using StoreBackend.Infrastructure.Repositories.user;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Controllers
 builder.Services.AddControllers();
-builder.Services.AddDbContext<AppDbContext>(opt => 
-        opt.UseSqlServer(
-            builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IProductRepository,ProductRepository>();
-builder.Services.AddScoped<IUserRepository,UserRepository>();
+var allowedOrigins = builder.Configuration
+ .GetSection("Cors:AllowedOrigins")
+ .Get<string[]>();
+builder.Services.AddCors(options =>
+{
+ options.AddPolicy("AllowedOriginsPolicy", policy =>
+ {
+ policy.WithOrigins(allowedOrigins!)
+ .AllowAnyHeader()
+ .AllowAnyMethod();
+ });
+});
 
-builder.Services.AddScoped<IProductService,ProductService>();
-builder.Services.AddScoped<IUserService,UserService>();
+// DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
 
-builder.Services.AddScoped<IProductFacade,ProductFacade>();
-builder.Services.AddScoped<IUserFacade,UserFacade>();
+// Repositories
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Services
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Facades
+builder.Services.AddScoped<IProductFacade, ProductFacade>();
+builder.Services.AddScoped<IUserFacade, UserFacade>();
+
+// OpenAPI / Swagger
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

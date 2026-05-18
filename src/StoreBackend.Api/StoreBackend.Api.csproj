@@ -16,9 +16,4 @@
     <ProjectReference Include="..\StoreBackend.Facade\StoreBackend.Facade.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mappers\" />
-    <Folder Include="Models\Requests\user\" />
-  </ItemGroup>
-
 </Project>

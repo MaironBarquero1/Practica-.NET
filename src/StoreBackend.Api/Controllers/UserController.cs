@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StoreBackend.Facade;
+using StoreBackend.Api.Models.Requests;
 using StoreBackend.Api.Mappers;
-using StoreBackend.Api.Models.Requests.user;
 using StoreBackend.Exceptions;
-using StoreBackend.Facade.user;
+using StoreBackend.Domain.Entities;
+using StoreBackend.DomainService;
 
-namespace StoreBackend.Api
+
+
+namespace StoreBackend.Api.Controllers
 {
     [Route("api/users")]
     [ApiController]
@@ -17,8 +21,9 @@ namespace StoreBackend.Api
         {
             this.userFacade = userFacade;
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUser()
         {
             var users = await userFacade.GetAllAsync();
             var models = UserMapper.ToModel(users);
@@ -43,10 +48,21 @@ namespace StoreBackend.Api
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] CreateUserRequestModel user)
         {
-            var dto = UserMapper.ToDto(user);
-            var addedUser = await userFacade.AddAsync(dto);
-            var model = UserMapper.ToModel(addedUser);
-            return CreatedAtAction(nameof(GetUser), new { id = model.ExternalId }, model);
+            try
+            {
+                var requestDto = UserMapper.ToDto(user);
+                var userDto = await userFacade.AddAsync(requestDto);
+                var userModel = UserMapper.ToModel(userDto);
+                return Ok(userModel);
+            }
+            catch (Exceptions.BadRequestResponseException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the request.");
+            }
         }
 
         [HttpDelete("{id}")]
@@ -62,5 +78,7 @@ namespace StoreBackend.Api
                 return NotFound();
             }
         }
+
+
     }
 }

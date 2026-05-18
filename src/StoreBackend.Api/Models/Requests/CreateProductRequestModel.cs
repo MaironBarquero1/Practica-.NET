@@ -1,14 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-
-namespace StoreBackend.Api.Models.Requests.product;
+namespace StoreBackend.Api.Models.Requests;
 
 public class CreateProductRequestModel
 {
     [Required]
-    public Guid? ProductResourceId { get; set; }
-
+    public Guid? ProductResourceId{get;set;}
     [Required]
     [MaxLength(50)]
-    public String? Name { get; set; }
+    public string? Name {get;set;}
 }

@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StoreBackend.Facade;
+using StoreBackend.Api.Models.Requests;
 using StoreBackend.Api.Mappers;
-using StoreBackend.Api.Models.Requests.product;
 using StoreBackend.Exceptions;
-using StoreBackend.Facade.product;
+using StoreBackend.Domain.Entities;
+using StoreBackend.DomainService;
 
-namespace StoreBackend.Api
+
+
+namespace StoreBackend.Api.Controllers
 {
     [Route("api/products")]
     [ApiController]
@@ -17,8 +21,9 @@ namespace StoreBackend.Api
         {
             this.productFacade = productFacade;
         }
+
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProduct()
         {
             var products = await productFacade.GetAllAsync();
             var models = ProductMapper.ToModel(products);
@@ -62,5 +67,7 @@ namespace StoreBackend.Api
                 return NotFound();
             }
         }
+
+
     }
 }

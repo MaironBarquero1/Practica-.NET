@@ -1,29 +1,26 @@
 using System;
+using System.Linq;
 using StoreBackend.Domain.Entities;
-using StoreBackend.Dto.user;
+using StoreBackend.Dto;
 
-namespace StoreBackend.Facade.Mappers;
-
-public class UserMapper
+namespace StoreBackend.Facade.Mappers
 {
-    public static List<UserDto> ToDto(List<User> products)
+    public class UserMapper
     {
-        return products.Select(u => ToDto(u)).ToList();
-    }
-
-    public static UserDto ToDto(User user)
-    {
-        return new UserDto
+        public static List<UserDto> ToDto(List<User> users)
         {
-            ExternalId = user.ExternalId,
-            Username = user.Username,
-            Email = user.Email,
-            Name = user.Name
-        };
-    }
+            return users.Select(u => ToDto(u)).ToList();
+        }
 
-    public static List<UserDto> toDto(List<User> users)
-    {
-        return users.Select(u => ToDto(u)).ToList();
+        public static UserDto ToDto(User user)
+        {
+            return new UserDto
+            {
+                ExternalId = user.ExternalId,
+                UserName = user.UserName,
+                Email = user.Email
+                
+            };
+        }
     }
 }
